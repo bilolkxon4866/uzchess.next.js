@@ -1,6 +1,7 @@
 "use client";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface PlayerType {
     id: number;
@@ -19,6 +20,7 @@ function ArrowUp({className}: { className?: string }) {
 
 export default function Ranking() {
     const [players, setPlayers] = useState<PlayerType[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         async function getPlayers() {
@@ -41,6 +43,7 @@ export default function Ranking() {
             <div className="flex items-center justify-between px-[16px] pt-[16px]">
                 <h2 className="text-[20px] font-medium text-[#F7F9FA]">Reyting</h2>
                 <button
+                    onClick={() => router.push("/ranking")}
                     className="flex items-center gap-1 text-[16px] text-[#9DA1A3] cursor-pointer hover:text-white transition-colors">
                     Barchasi
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"

@@ -1,5 +1,6 @@
 "use client";
 import {useEffect, useState} from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 interface MatchType {
@@ -38,6 +39,7 @@ function Trophy({won}: { won: boolean }) {
 
 export default function CompletedGames() {
     const [matches, setMatches] = useState<MatchType[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         async function getMatches() {
@@ -59,6 +61,7 @@ export default function CompletedGames() {
             <div className="flex items-center justify-between px-[20px] pt-[20px] pb-[16px]">
                 <h2 className="text-[20px] font-medium text-[#FCFCFC]">Yakunlangan o&apos;yinlar</h2>
                 <button
+                    onClick={() => router.push("/games")}
                     className="flex items-center gap-1 text-[16px] text-[#9DA1A3] cursor-pointer hover:text-white transition-colors">
                     Barchasi
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"

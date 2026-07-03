@@ -1,6 +1,10 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState } from "react";
+import SearchModal from "@/app/command/Header/searchModal";
+import NotificationModal from "@/app/command/Header/notificationModal";
+import AuthModal from "@/app/command/Auth/authModal";
 
 const menuItems = [
     { label: "Asosiy", path: "/" },
@@ -19,7 +23,7 @@ function NavItem({ label, path, index, activeIndex }: {
     const router = useRouter();
     const isActive = activeIndex === index;
 
-    return <>
+    return (
         <li
             onClick={() => router.push(path)}
             className="relative cursor-pointer py-2 group"
@@ -31,48 +35,81 @@ function NavItem({ label, path, index, activeIndex }: {
             </span>
             {isActive && <div className="left-0 w-full h-[2px] bg-[#00A3FF]"></div>}
         </li>
-    </>;
+    );
 }
 
 export default function HeaderItem() {
     const pathname = usePathname();
     const activeIndex = menuItems.findIndex(item => item.path === pathname);
 
-    return <>
-        <header className="w-[1460px] h-[76px] border-[#232627] border-[1px] bg-[#1A1D1F] rounded-2xl flex items-center justify-between ml-[34px] mt-[20px]">
-            <div className="flex items-center my-[26px] ml-[24px]">
-                <Image src='/icon.svg' alt="shaxmat icon" className="w-[103.61px] h-[28px] mb-[4px]" width={104} height={28}/>
-                <div className="h-[24px] w-px bg-gray-500"></div>
-                <div className="flex w-[112px] h-[24px] gap-14">
-                    <span className="text-white text-sm font-medium size-4 font-poppins mb-1 ml-4">O&apos;zbekcha</span>
-                    <Image src="/icon2.svg" alt="select icon" width={16} height={16}/>
-                </div>
-            </div>
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [notifOpen, setNotifOpen] = useState(false);
+    const [authOpen, setAuthOpen] = useState(false);
 
-            <ul className="flex items-center gap-10">
-                {menuItems.map((item, index) => (
-                    <NavItem
-                        key={index}
-                        label={item.label}
-                        path={item.path}
-                        index={index}
-                        activeIndex={activeIndex}
-                    />
-                ))}
-            </ul>
-
-            <div className="w-[293px] h-[40px] flex items-center gap-6">
-                <div className="w-[120px] h-[24px] flex gap-6">
-                    <Image src="/search.svg" alt="icon" className="w-[24px] h-[24px] cursor-pointer" width={24} height={24}/>
-                    <Image src="/savat.svg" alt="icon" className="w-[24px] h-[24px] cursor-pointer" width={24} height={24}/>
-                    <Image src="/notification.svg" alt="icon" className="w-[24px] h-[24px] cursor-pointer" width={24} height={24}/>
+    return (
+        <>
+            <header className="w-[1460px] h-[76px] border-[#232627] border-[1px] bg-[#1A1D1F] rounded-2xl flex items-center justify-between ml-[34px] mt-[20px]">
+                <div className="flex items-center my-[26px] ml-[24px]">
+                    <Image src='/icon.svg' alt="shaxmat icon" className="w-[103.61px] h-[28px] mb-[4px]" width={104} height={28}/>
+                    <div className="h-[24px] w-px bg-gray-500"></div>
+                    <div className="flex w-[112px] h-[24px] gap-14">
+                        <span className="text-white text-sm font-medium size-4 font-poppins mb-1 ml-4">O&apos;zbekcha</span>
+                        <Image src="/icon2.svg" alt="select icon" width={16} height={16}/>
+                    </div>
                 </div>
-                <div className="h-[24px] w-px bg-gray-500"></div>
-                <button className="text-white flex justify-center items-center bg-[#1C92E0] w-33 h-10 gap-[10px] rounded-[8px] mr-5 cursor-pointer hover:bg-gray-600">
-                    Kirish
-                    <Image src="/log-in.svg" alt="icon" className="w-5 h-5" width={20} height={20}/>
-                </button>
-            </div>
-        </header>
-    </>;
+
+                <ul className="flex items-center gap-10">
+                    {menuItems.map((item, index) => (
+                        <NavItem
+                            key={index}
+                            label={item.label}
+                            path={item.path}
+                            index={index}
+                            activeIndex={activeIndex}
+                        />
+                    ))}
+                </ul>
+
+                <div className="w-[293px] h-[40px] flex items-center gap-6">
+                    <div className="w-[120px] h-[24px] flex gap-6">
+                        <Image
+                            src="/search.svg"
+                            alt="qidiruv"
+                            className="w-[24px] h-[24px] cursor-pointer"
+                            width={24}
+                            height={24}
+                            onClick={() => setSearchOpen(true)}
+                        />
+                        <Image
+                            src="/savat.svg"
+                            alt="savatcha"
+                            className="w-[24px] h-[24px] cursor-pointer"
+                            width={24}
+                            height={24}
+                        />
+                        <Image
+                            src="/notification.svg"
+                            alt="xabaranoma"
+                            className="w-[24px] h-[24px] cursor-pointer"
+                            width={24}
+                            height={24}
+                            onClick={() => setNotifOpen(true)}
+                        />
+                    </div>
+                    <div className="h-[24px] w-px bg-gray-500"></div>
+                    <button
+                        onClick={() => setAuthOpen(true)}
+                        className="text-white flex justify-center items-center bg-[#1C92E0] w-33 h-10 gap-[10px] rounded-[8px] mr-5 cursor-pointer hover:bg-gray-600"
+                    >
+                        Kirish
+                        <Image src="/log-in.svg" alt="icon" className="w-5 h-5" width={20} height={20}/>
+                    </button>
+                </div>
+            </header>
+
+            {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
+            {notifOpen && <NotificationModal onClose={() => setNotifOpen(false)} />}
+            {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
+        </>
+    );
 }

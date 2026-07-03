@@ -71,7 +71,7 @@ export default function NewsItem2({search}: { search: string }) {
                     onClick={loadMore}
                     className="ml-[450px] w-[131px] h-[40px] mt-[20px] bg-[#1A1D1F] rounded-[8px] text-white cursor-pointer"
                 >
-                    Ko'proq
+                    Koproq
                 </button>
             )}
         </div>
