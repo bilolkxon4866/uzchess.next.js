@@ -15,6 +15,13 @@ export default function ForgotPassword({ onSuccess, onBack }: ForgotPasswordProp
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+
+    function handlePhoneChange(value: string) {
+        const digits = value.replace(/\D/g, "");
+        const sliced = digits.slice(0, 9);
+        setLogin(sliced ? "+998" + sliced : "+998");
+    }
+
     async function handleSubmit() {
         if (!login.trim()) {
             setError("Maydonni to'ldiring");
@@ -77,13 +84,14 @@ export default function ForgotPassword({ onSuccess, onBack }: ForgotPasswordProp
                 </label>
                 {loginType === "phone" ? (
                     <div className="flex items-center border border-[#272B30] rounded-[8px] overflow-hidden focus-within:border-[#2470FF] transition-colors">
-                        <span className="px-[12px] text-[14px] text-[#FCFCFC] border-r border-[#272B30] h-[44px] flex items-center">
+                        <span className="px-[12px] text-[14px] text-[#FCFCFC] border-r border-[#272B30] h-[44px] flex items-center shrink-0">
                             +998
                         </span>
                         <input
-                            value={login}
-                            onChange={(e) => setLogin("+998" + e.target.value.replace(/\D/g, ""))}
+                            value={login.startsWith("+998") ? login.slice(4) : login}
+                            onChange={(e) => handlePhoneChange(e.target.value)}
                             placeholder="__ ___ __ __"
+                            maxLength={9}
                             className="flex-1 h-[44px] px-[12px] bg-transparent text-[14px] text-[#FCFCFC] placeholder:text-[#6F767E] outline-none"
                         />
                     </div>

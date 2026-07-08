@@ -91,10 +91,7 @@ export default function SearchModal({ onClose }: SearchModalProps) {
 
                 {searched && results.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-[60px] gap-4">
-                        <Image src="/notFound.svg" alt="topilmadi" width={80} height={80} />
-                        <p className="text-[16px] font-bold text-[#FCFCFC]">
-                            Hech qanday ma&apos;lumot topilmadi
-                        </p>
+                        <Image src="/NotFound.svg" alt="topilmadi" width={488} height={263} />
                     </div>
                 )}
 

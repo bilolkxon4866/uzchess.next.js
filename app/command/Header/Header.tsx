@@ -1,10 +1,11 @@
 "use client"
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchModal from "@/app/command/Header/searchModal";
 import NotificationModal from "@/app/command/Header/notificationModal";
 import AuthModal from "@/app/command/Auth/authModal";
+import { getTokenData, api } from "@/app/lib/api";
 
 const menuItems = [
     { label: "Asosiy", path: "/" },
@@ -40,11 +41,39 @@ function NavItem({ label, path, index, activeIndex }: {
 
 export default function HeaderItem() {
     const pathname = usePathname();
+    const router = useRouter();
     const activeIndex = menuItems.findIndex(item => item.path === pathname);
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [notifOpen, setNotifOpen] = useState(false);
     const [authOpen, setAuthOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [userImage, setUserImage] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setIsLoggedIn(false);
+            return;
+        }
+        setIsLoggedIn(true);
+
+        async function getUser() {
+            try {
+                const tokenData = getTokenData();
+                if (!tokenData) return;
+                const response = await api.get(`/admin/users/${tokenData.id}`);
+                setUserName(response.data.fullName || "");
+                setUserImage(response.data.profileImage || "");
+            } catch {
+                // token noto'g'ri bo'lsa
+                setIsLoggedIn(false);
+            }
+        }
+        getUser();
+    }, [authOpen]); // authOpen o'zgarganda qayta tekshiradi (login bo'lgandan keyin)
 
     return (
         <>
@@ -70,7 +99,7 @@ export default function HeaderItem() {
                     ))}
                 </ul>
 
-                <div className="w-[293px] h-[40px] flex items-center gap-6">
+                <div className="w-[320px] h-[40px] flex items-center gap-6">
                     <div className="w-[120px] h-[24px] flex gap-6">
                         <Image
                             src="/search.svg"
@@ -97,13 +126,38 @@ export default function HeaderItem() {
                         />
                     </div>
                     <div className="h-[24px] w-px bg-gray-500"></div>
-                    <button
-                        onClick={() => setAuthOpen(true)}
-                        className="text-white flex justify-center items-center bg-[#1C92E0] w-33 h-10 gap-[10px] rounded-[8px] mr-5 cursor-pointer hover:bg-gray-600"
-                    >
-                        Kirish
-                        <Image src="/log-in.svg" alt="icon" className="w-5 h-5" width={20} height={20}/>
-                    </button>
+
+                    {isLoggedIn ? (
+                        // Login bo'lgan — ism + avatar ko'rsatamiz
+                        <button
+                            onClick={() => router.push("/profile/courses")}
+                            className="flex items-center gap-[8px] cursor-pointer hover:opacity-80 transition-opacity mr-5"
+                        >
+                            <span className="text-white text-[14px] font-medium">
+                                {userName}
+                            </span>
+                            <div className="relative w-[36px] h-[36px] rounded-full overflow-hidden border-2 border-[#2470FF]">
+                                <Image
+                                    src={userImage
+                                        ? `http://localhost:8888/${userImage}`
+                                        : "/default-avatar.svg"}
+                                    alt="profil"
+                                    fill
+                                    sizes="36px"
+                                    className="object-cover"
+                                />
+                            </div>
+                        </button>
+                    ) : (
+                        // Login bo'lmagan — Kirish tugmasi
+                        <button
+                            onClick={() => setAuthOpen(true)}
+                            className="text-white flex justify-center items-center bg-[#1C92E0] w-33 h-10 gap-[10px] rounded-[8px] mr-5 cursor-pointer hover:bg-gray-600 transition-colors"
+                        >
+                            Kirish
+                            <Image src="/log-in.svg" alt="icon" className="w-5 h-5" width={20} height={20}/>
+                        </button>
+                    )}
                 </div>
             </header>
 

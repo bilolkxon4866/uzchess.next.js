@@ -112,7 +112,7 @@ export default function RankingPage() {
 
                         {players.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-[80px] gap-4">
-                                <Image src="/NotFound.svg" alt="topilmadi" width={305} height={203} />
+                                <Image src="/NotFound.svg" alt="topilmadi" width={488} height={263} />
                                 <p className="text-[16px] text-[#6F767E]">
                                 </p>
                             </div>

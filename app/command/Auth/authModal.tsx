@@ -52,29 +52,32 @@ export default function AuthModal({ onClose }: AuthModalProps) {
 
     return (
         <div
-            className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{ backgroundColor: "rgba(0,0,0,0.85)" }}
             onClick={onClose}
         >
             <div
                 className="relative w-[780px] bg-[#1A1D1F] rounded-[16px] overflow-hidden flex"
+                style={{ minHeight: "500px" }}
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Yopish tugmasi */}
+                {/* Yopish tugmasi — SVG to'g'ridan-to'g'ri, fayl kerak emas */}
                 <button
                     onClick={onClose}
-                    className="absolute top-[16px] right-[16px] z-10 cursor-pointer"
+                    className="absolute top-[16px] right-[16px] z-10 cursor-pointer text-[#9DA1A3] hover:text-white transition-colors"
                 >
-                    <Image src="/close.svg" alt="yopish" width={24} height={24} />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
                 </button>
 
                 {/* Chap qism — forma */}
-                <div className="w-[380px] shrink-0 p-[32px]">
+                <div className="w-[380px] shrink-0 p-[32px] overflow-y-auto">
                     {/* Logo */}
                     <div className="flex justify-center mb-[24px]">
                         <Image src="/icon.svg" alt="UzChess" width={120} height={32} />
                     </div>
 
-                    {/* Forma */}
                     {step === "form" && mode === "register" && (
                         <RegisterForm
                             onSuccess={goToOtp}
@@ -112,11 +115,12 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                 </div>
 
                 {/* O'ng qism — rasm */}
-                <div className="flex-1 relative bg-[#0D1B2A] min-h-[500px]">
+                <div className="flex-1 relative bg-[#0D1B2A]" style={{ minHeight: "500px" }}>
                     <Image
                         src="/Screen.png"
                         alt="UzChess preview"
                         fill
+                        sizes="400px"
                         className="object-cover"
                     />
                     <div className="absolute bottom-[32px] left-[32px] right-[32px]">

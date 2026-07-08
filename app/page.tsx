@@ -1,15 +1,15 @@
 import HeaderItem from "@/app/command/Header/Header";
 import Footer from "@/app/command/Footer/Footer";
 import Anons from "@/app/command/Anons";
-import GameOfTheDay from "@/app/command/Main/GameOfTheDay";
-import Ranking from "@/app/command/Main/Ranking";
-import QuickLinks from "@/app/command/Main/QuickLinks";
-import CompletedGames from "@/app/command/Main/CompletedGames";
-import ChampionshipBanner from "@/app/command/Main/ChampionshipBanner";
-import NewsList from "@/app/command/Main/NewsList";
-import DonationCard from "@/app/command/Main/DonationCard";
-import TopCourses from "@/app/command/Main/TopCourses";
-import TopBooks from "@/app/command/Main/TopBooks";
+import GameOfTheDay from "@/app/Main/GameOfTheDay";
+import Ranking from "@/app/Main/Ranking";
+import QuickLinks from "@/app/Main/QuickLinks";
+import CompletedGames from "@/app/Main/CompletedGames";
+import ChampionshipBanner from "@/app/Main/ChampionshipBanner";
+import NewsList from "@/app/Main/NewsList";
+import DonationCard from "@/app/Main/DonationCard";
+import TopCourses from "@/app/Main/TopCourses";
+import TopBooks from "@/app/Main/TopBooks";
 
 export default function Home() {
     return (

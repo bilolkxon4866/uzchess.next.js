@@ -1,79 +1,84 @@
-import {useState} from "react";
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 
-export default function CourseFilterItem() {
-    const [isOpenDegree, setIsOpenDegree] = useState(false)
-    const [degree, setDegree] = useState('Barchasi')
-    const [isOpenCategory, setIsOpenCategory] = useState(false)
-    const [category, setCategory] = useState('Barchasi')
-    const [isOpenLessonLanguage, setIsOpenLessonLanguage] = useState(false)
-    const [lessonLanguage, setLessonLanguage] = useState('Barchasi')
-    return <div className="w-[286px] h-[401px] mt-[24px]">
-        <div className="w-[286px] h-[82px]">
-            <p className="font-medium text-[12px] text-[#F7F9FA99] mb-[16px]">Darajani tanlang:</p>
+interface Props {
+    degree: string; setDegree: (v: string) => void;
+    category: string; setCategory: (v: string) => void;
+    language: string; setLanguage: (v: string) => void;
+    rating: string; setRating: (v: string) => void;
+}
+
+function Dropdown({ label, value, options, onChange }: {
+    label: string;
+    value: string;
+    options: string[];
+    onChange: (v: string) => void;
+}) {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="mb-[20px]">
+            <p className="text-[12px] text-[#9DA1A3] mb-[8px] uppercase">{label}</p>
             <div
-                className="relative select-none bg-[#15181A] border-[#232627] border-[1px] rounded-[8px] w-[286px] h-[54px] flex justify-between items-center p-[16px]"
-                onClick={() => setIsOpenDegree(!isOpenDegree)}>
-                <div>{degree}</div>
-                <Image src="/select.svg" alt="select icon" width={16} height={16}/>
-                {isOpenDegree &&
-                    <div className="absolute px-2 py-1 bg-[#15181A] rounded-sm">
-                        <div onClick={() => setDegree('Barchasi')}>Barchasi</div>
-                        <div onClick={() => setDegree('Yuqori')}>Yuqori</div>
-                        <div onClick={() => setDegree('O\'rta')}>O'rta</div>
-                        <div onClick={() => setDegree('Past')}>Past</div>
-                    </div>}
+                className="relative select-none bg-[#15181A] border border-[#232627] rounded-[8px] h-[48px] flex justify-between items-center px-[16px] cursor-pointer"
+                onClick={() => setOpen(!open)}
+            >
+                <span className="text-[14px] text-white">{value}</span>
+                <Image src="/chevron.svg" alt="arrow" width={16} height={16}/>
+                {open && (
+                    <div className="absolute top-[52px] left-0 w-full bg-[#15181A] border border-[#232627] rounded-[8px] z-50 overflow-hidden shadow-lg">
+                        {options.map((opt) => (
+                            <div
+                                key={opt}
+                                className="px-[16px] py-[10px] text-[14px] text-white hover:bg-[#272B30] cursor-pointer"
+                                onClick={(e) => { e.stopPropagation(); onChange(opt); setOpen(false); }}
+                            >
+                                {opt}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
-        <div className="w-[286px] h-[82px] mt-[24px]">
-            <p className="font-medium text-[12px] text-[#F7F9FA99] mb-[16px]">Kategoriya:</p>
-            <div
-                className="relative select-none bg-[#15181A] border-[#232627] border-[1px] rounded-[8px] w-[286px] h-[54px] flex justify-between items-center p-[16px]"
-                onClick={() => setIsOpenCategory(!isOpenCategory)}>
-                <div>{category}</div>
-                <Image src="/select.svg" alt="select icon" width={16} height={16}/>
-                {isOpenCategory &&
-                    <div className="absolute px-2 py-1 bg-[#15181A] rounded-sm">
-                        <div onClick={() => setCategory('Barchasi')}>Barchasi</div>
-                        <div onClick={() => setCategory('English')}>English</div>
-                        <div onClick={() => setCategory('O\'zbek')}>O'zbek</div>
-                        <div onClick={() => setCategory('Russian')}>Russian</div>
-                    </div>}
-            </div>
-        </div>
-        <div className="w-[286px] h-[82px] mt-[24px]">
-            <p className="font-medium text-[12px] text-[#F7F9FA99] mb-[16px]">Darslik tili:</p>
-            <div
-                className="relative select-none bg-[#15181A] border-[#232627] border-[1px] rounded-[8px] w-[286px] h-[54px] flex justify-between items-center p-[16px]"
-                onClick={() => setIsOpenLessonLanguage(!isOpenLessonLanguage)}>
-                <div>{lessonLanguage}</div>
-                <Image src="/select.svg" alt="select icon" width={16} height={16}/>
-                {isOpenLessonLanguage &&
-                    <div className="absolute px-2 py-1 bg-[#15181A] rounded-sm">
-                        <div onClick={() => setLessonLanguage('Barchasi')}>Barchasi</div>
-                        <div onClick={() => setLessonLanguage('English')}>English</div>
-                        <div onClick={() => setLessonLanguage('O\'zbek')}>O'zbek</div>
-                        <div onClick={() => setLessonLanguage('Russian')}>Russian</div>
-                    </div>}
-            </div>
-        </div>
-        <div className="w-[286px] h-[82px] mt-[24px]">
+    );
+}
+
+export default function CourseFilterItem({ degree, setDegree, category, setCategory, language, setLanguage, rating, setRating }: Props) {
+    return (
+        <div>
+            <Dropdown
+                label="Darajani tanlang:"
+                value={degree}
+                options={["Barchasi", "Boshlang'ich", "O'rta", "Professional", "Havaskor"]}
+                onChange={setDegree}
+            />
+            <Dropdown
+                label="Kategoriya:"
+                value={category}
+                options={["Barchasi", "Strategiya", "Taktika", "Hujum qilish", "Qoidalar", "Himoyalanish"]}
+                onChange={setCategory}
+            />
+            <Dropdown
+                label="Darslik tili:"
+                value={language}
+                options={["Barchasi", "O'zbek", "English", "Russian"]}
+                onChange={setLanguage}
+            />
+
+            {/* Reyting */}
             <div>
-                <p className="font-medium text-[12px] text-[#F7F9FA99] mb-[16px]">Reyting:</p>
-                <div
-                    className="flex flex-row-reverse justify-around border-[#232627] border-[1px] items-center [&>input]:hidden bg-[#15181A] w-[286px] h-[56px] [&>label]:text-[45px] [&>label]:rounded-[10px] [&>label]:cursor-pointer [&>label]:text-[#1A1D1F] [&>input:checked~label]:text-yellow-400 [&>label:hover]:text-yellow-400 [&>label:hover~label]:text-yellow-400">
-                    <input type="radio" id="s5" name="rating" value="5"/>
-                    <label htmlFor="s5">★</label>
-                    <input type="radio" id="s4" name="rating" value="4"/>
-                    <label htmlFor="s4">★</label>
-                    <input type="radio" id="s3" name="rating" value="3"/>
-                    <label htmlFor="s3">★</label>
-                    <input type="radio" id="s2" name="rating" value="2"/>
-                    <label htmlFor="s2">★</label>
-                    <input type="radio" id="s1" name="rating" value="1"/>
-                    <label htmlFor="s1">★</label>
+                <p className="text-[12px] text-[#9DA1A3] mb-[8px] uppercase">Reyting:</p>
+                <div className="flex flex-row-reverse justify-around border border-[#232627] items-center bg-[#15181A] h-[56px] [&>input]:hidden [&>label]:text-[32px] [&>label]:cursor-pointer [&>label]:text-[#232627] [&>input:checked~label]:text-yellow-400 [&>label:hover]:text-yellow-400 [&>label:hover~label]:text-yellow-400 rounded-[8px]">
+                    {[5,4,3,2,1].map((n) => (
+                        <>
+                            <input key={`i${n}`} type="radio" id={`cs${n}`} name="courseRating" value={String(n)} checked={rating === String(n)} onChange={(e) => setRating(e.target.value)}/>
+                            <label key={`l${n}`} htmlFor={`cs${n}`}>★</label>
+                        </>
+                    ))}
                 </div>
             </div>
         </div>
-    </div>
+    );
 }

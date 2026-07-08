@@ -62,7 +62,7 @@ export default function NewsItem2({search}: { search: string }) {
                     ))
                 ) : (
                     <div className="flex flex-col w-[1000px] items-center justify-center py-16 bg-[#202020] rounded-[12px]">
-                        <Image src="/NotFound.svg" alt="" className="w-[200px] h-[180px] mb-4" width={200} height={180}/>
+                        <Image src="/NotFound.svg" alt="topilmadi" width={488} height={263}/>
                     </div>
                 )}
             </div>

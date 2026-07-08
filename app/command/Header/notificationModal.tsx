@@ -1,36 +1,34 @@
 "use client";
-import Image from "next/image";
 
 interface Notification {
     id: number;
-    image: string;
+    bgColor: string;
+    emoji: string;
     title: string;
     description: string;
-    expanded: boolean;
 }
 
-//backedda endpoint yoqligi uchun qo'lda qoshilgan
 const notifications: Notification[] = [
     {
         id: 1,
-        image: "/notification1.png",
-        title: "Endilikda uzchess platformasidan kitoblar buyurtma qilishingiz mumkin 😊",
+        bgColor: "#1C3A5E",
+        emoji: "😊",
+        title: "Endilikda uzchess platformasidan kitoblar buyurtma qilishingiz mumkin",
         description: "",
-        expanded: true,
     },
     {
         id: 2,
-        image: "/notification2.png",
+        bgColor: "#1A3A2A",
+        emoji: "🛡️",
         title: "14-yanvar muborak bo'lsin",
         description: "Qadirli vatan himoyachilari sizlarni 14-yanvar vatan himoyachilari kuni bilan chin qalbimizsdan muborakbod etamiz!",
-        expanded: false,
     },
     {
         id: 3,
-        image: "/notification3.png",
+        bgColor: "#2A1A3A",
+        emoji: "🎉",
         title: "Yangi yilingiz muborak bo'lsin!",
         description: "",
-        expanded: false,
     },
 ];
 
@@ -41,53 +39,54 @@ interface NotificationModalProps {
 export default function NotificationModal({ onClose }: NotificationModalProps) {
     return (
         <div
-            className="fixed inset-0 z-50 bg-black/60"
+            className="fixed inset-0 z-50"
             onClick={onClose}
         >
             <div
-                className="absolute right-[40px] top-[70px] w-[380px] bg-[#1A1D1F] rounded-[12px] overflow-hidden"
+                className="absolute right-[40px] top-[80px] w-[380px] bg-[#1A1D1F] rounded-[12px] overflow-hidden shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
             >
+                {/* Header */}
                 <div className="flex items-center justify-between px-[20px] py-[16px] border-b border-[#272B30]">
                     <h2 className="text-[18px] font-bold text-[#FCFCFC]">Xabaranoma</h2>
-                    <button onClick={onClose} className="cursor-pointer">
-                        <Image src="/close.svg" alt="yopish" width={20} height={20} />
+                    <button
+                        onClick={onClose}
+                        className="cursor-pointer text-[#9DA1A3] hover:text-white transition-colors"
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
                     </button>
                 </div>
 
+                {/* Xabarlar */}
                 <div className="flex flex-col gap-[12px] p-[16px] max-h-[500px] overflow-y-auto">
                     {notifications.map((item) => (
                         <div
                             key={item.id}
-                            className="bg-[#111315] rounded-[12px] overflow-hidden"
+                            className="rounded-[12px] overflow-hidden"
+                            style={{ backgroundColor: item.bgColor }}
                         >
-                            <div className="relative w-full h-[160px]">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="object-cover"
-                                    sizes="380px"
-                                />
+                            {/* Rasm o'rniga rang + emoji */}
+                            <div
+                                className="w-full h-[120px] flex items-center justify-center text-[48px]"
+                                style={{ backgroundColor: item.bgColor }}
+                            >
+                                {item.emoji}
                             </div>
 
-                            <div className="p-[16px]">
-                                <h3 className="text-[15px] font-bold text-[#FCFCFC] leading-[20px] mb-[8px]">
+                            {/* Matn */}
+                            <div className="p-[16px] bg-[#111315]">
+                                <h3 className="text-[14px] font-bold text-[#FCFCFC] leading-[20px] mb-[6px]">
                                     {item.title}
                                 </h3>
                                 {item.description && (
-                                    <p className="text-[13px] text-[#9DA1A3] leading-[18px] mb-[8px]">
+                                    <p className="text-[12px] text-[#9DA1A3] leading-[17px] mb-[8px]">
                                         {item.description}
                                     </p>
                                 )}
-                                <button className="flex items-center gap-1 text-[13px] text-[#2470FF] cursor-pointer hover:underline">
-                                    {item.expanded ? "Yopish" : "Batafsil"}
-                                    <Image
-                                        src={item.expanded ? "/icon2.svg" : "/chevron.svg"}
-                                        alt="arrow"
-                                        width={14}
-                                        height={14}
-                                    />
+                                <button className="text-[12px] text-[#2470FF] cursor-pointer hover:underline">
+                                    Batafsil
                                 </button>
                             </div>
                         </div>
